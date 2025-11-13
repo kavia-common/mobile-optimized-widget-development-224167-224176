@@ -11,6 +11,8 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { getConfig } from "./utils/config";
 import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Health } from "./components/Health";
+import AuthCallback from "./components/AuthCallback";
+import AuthError from "./components/AuthError";
 
 // PUBLIC_INTERFACE
 function AppShell() {
@@ -99,6 +101,8 @@ function AppShell() {
           <Route path="/" element={<WidgetCard onChange={setWidgetState} />} />
           <Route path="/settings" element={<Settings />} />
           <Route path={healthPath} element={<Health />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/auth/error" element={<AuthError />} />
           <Route path="*" element={<div className="card"><h2>Not found</h2></div>} />
         </Routes>
       </main>

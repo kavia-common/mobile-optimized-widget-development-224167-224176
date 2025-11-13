@@ -4,6 +4,9 @@ const bool = (val) => String(val).toLowerCase() === "true";
  * PUBLIC_INTERFACE
  * getConfig
  * Provides app configuration from environment variables with safe fallbacks.
+ * Supabase (if used) expects:
+ * - REACT_APP_SUPABASE_URL
+ * - REACT_APP_SUPABASE_ANON_KEY
  * This function reads only REACT_APP_* variables and never crashes if missing.
  * It also normalizes and validates values where appropriate.
  */

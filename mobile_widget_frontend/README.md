@@ -101,4 +101,8 @@ REACT_APP_LOG_LEVEL=info
 REACT_APP_HEALTHCHECK_PATH=/health
 REACT_APP_FEATURE_FLAGS=beta,new-ui
 REACT_APP_EXPERIMENTS_ENABLED=false
+
+# Supabase (frontend-safe)
+REACT_APP_SUPABASE_URL=https://doimejfdhaoionftdiqd.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
