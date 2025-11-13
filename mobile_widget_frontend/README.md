@@ -1,82 +1,103 @@
-# Lightweight React Template for KAVIA
+# Mobile Widget Frontend (Ocean Professional)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+Mobile-first React widget with a single-column layout, fixed header, sticky bottom actions, and theme-driven design.
 
-## Features
+## Quick Start
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Requirements: Node 18+
+- Install: `npm install`
+- Run: `npm start` (http://localhost:3000)
+- Test: `npm test`
+- Build: `npm run build`
 
-## Getting Started
+## Theme
 
-In the project directory, you can run:
+Ocean Professional palette:
+- Primary: `#2563EB`
+- Secondary/Success: `#F59E0B`
+- Error: `#EF4444`
+- Background: `#f9fafb`
+- Surface: `#ffffff`
+- Text: `#111827`
 
-### `npm start`
+See `src/theme.css` for variables.
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Layout
 
-### `npm test`
+- Fixed header with app title/logo placeholder
+- Main content hosts `WidgetCard`
+- Sticky bottom bar with primary and secondary CTAs
+- Minimal hash-based routing:
+  - `#home` (default)
+  - `#settings`
+  - Health: `#{REACT_APP_HEALTHCHECK_PATH}` (defaults to `#health`)
 
-Launches the test runner in interactive watch mode.
+## Accessibility
 
-### `npm run build`
+- All interactive elements have aria labels/roles
+- Focus rings and keyboard navigation supported
+- Honors `prefers-reduced-motion`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Configuration
 
-## Customization
+The app reads configuration from environment variables (optional) and falls back safely:
 
-### Colors
+- REACT_APP_API_BASE
+- REACT_APP_BACKEND_URL
+- REACT_APP_FRONTEND_URL
+- REACT_APP_WS_URL
+- REACT_APP_NODE_ENV
+- REACT_APP_NEXT_TELEMETRY_DISABLED
+- REACT_APP_ENABLE_SOURCE_MAPS
+- REACT_APP_PORT
+- REACT_APP_TRUST_PROXY
+- REACT_APP_LOG_LEVEL (silent|error|warn|info|debug|trace; default info)
+- REACT_APP_HEALTHCHECK_PATH (default /health)
+- REACT_APP_FEATURE_FLAGS (comma-separated keys)
+- REACT_APP_EXPERIMENTS_ENABLED (true/false; default false)
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+See `src/utils/config.js`.
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+## Data
+
+`src/services/mockApi.js`:
+- Uses `REACT_APP_API_BASE` if set and returns JSON from `/items`
+- Otherwise returns local mock data. Fails gracefully.
+
+## State
+
+`src/context/AppContext.jsx` provides:
+- Theme (light/dark)
+- Feature flags (persisted via localStorage)
+- Experiments toggle (persisted via localStorage)
+
+## Health
+
+Health component at `REACT_APP_HEALTHCHECK_PATH` or `/health`. Navigate via header "Health" button.
+
+## No Telemetry
+
+If `REACT_APP_NEXT_TELEMETRY_DISABLED=true`, telemetry is disabled. This app does not integrate external telemetry services.
+
+## Tests
+
+Minimal test stubs in `src/__tests__/` and `src/App.test.js`.
+
+## .env.example
+
+Create `.env` and set any of the following:
 ```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+REACT_APP_API_BASE=
+REACT_APP_BACKEND_URL=
+REACT_APP_FRONTEND_URL=
+REACT_APP_WS_URL=
+REACT_APP_NODE_ENV=development
+REACT_APP_NEXT_TELEMETRY_DISABLED=true
+REACT_APP_ENABLE_SOURCE_MAPS=false
+REACT_APP_PORT=3000
+REACT_APP_TRUST_PROXY=false
+REACT_APP_LOG_LEVEL=info
+REACT_APP_HEALTHCHECK_PATH=/health
+REACT_APP_FEATURE_FLAGS=beta,new-ui
+REACT_APP_EXPERIMENTS_ENABLED=false
+```
