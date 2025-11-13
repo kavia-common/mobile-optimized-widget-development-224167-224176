@@ -27,10 +27,11 @@ See `src/theme.css` for variables.
 - Fixed header with app title/logo placeholder
 - Main content hosts `WidgetCard`
 - Sticky bottom bar with primary and secondary CTAs
-- Minimal hash-based routing:
-  - `#home` (default)
-  - `#settings`
-  - Health: `#{REACT_APP_HEALTHCHECK_PATH}` (defaults to `#health`)
+- Routing (react-router-dom@6 with HashRouter):
+  - `/` (Home/Widget)
+  - `/settings`
+  - Health: `{REACT_APP_HEALTHCHECK_PATH}` (defaults to `/health`)
+  - Note: HashRouter is used for broad static hosting compatibility. URLs appear as `/#/...`.
 
 ## Accessibility
 

@@ -1,47 +1,47 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { getConfig } from "./utils/config";
+import React, { useEffect } from "react";
 import { Health } from "./components/Health";
-
-function useHashRoute(defaultRoute = "home") {
-  const [route, setRoute] = useState(() => (window.location.hash.replace("#", "") || defaultRoute));
-  useEffect(() => {
-    const onHash = () => setRoute(window.location.hash.replace("#", "") || defaultRoute);
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, [defaultRoute]);
-  const navigate = (to) => {
-    if (!to.startsWith("#")) to = `#${to}`;
-    window.location.hash = to;
-  };
-  return [route, navigate];
-}
+import { getConfig } from "./utils/config";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /**
  * PUBLIC_INTERFACE
- * Router
- * Minimal hash-based router with dynamic health path support.
+ * Router (Deprecated)
+ * This shim preserves backward-compatibility for legacy imports.
+ * It redirects to react-router-dom routes and logs a console warning.
  */
-export function Router({ children, routes }) {
+export function Router({ children }) {
   /** This is a public function. */
-  const cfg = getConfig();
-  const healthKey = useMemo(() => cfg.healthPath.replace(/^\//, ""), [cfg.healthPath]);
-  const [route, navigate] = useHashRoute("home");
-
   useEffect(() => {
-    // Ensure a default route
-    if (!window.location.hash) {
-      window.location.hash = "#home";
-    }
+    // eslint-disable-next-line no-console
+    console.warn("Router.jsx is deprecated. The app now uses react-router-dom.");
   }, []);
+  const cfg = getConfig();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const healthKey = cfg.healthPath.replace(/^\//, "");
 
-  const rendered =
-    route === healthKey ? (
-      <Health />
-    ) : routes[route] ? (
-      routes[route]
-    ) : (
-      routes["404"] || <div className="main"><div className="card"><h2>Not found</h2></div></div>
-    );
+  const route = location.pathname === "/" ? "home" :
+                location.pathname === "/settings" ? "settings" :
+                location.pathname.replace(/^\//, "");
 
-  return typeof children === "function" ? children({ route, navigate, healthKey }) : rendered;
+  const wrappedChildren =
+    typeof children === "function"
+      ? children({
+          route,
+          // keep navigate signature similar to previous hash router
+          navigate: (to) => {
+            if (to.startsWith("#")) {
+              const p = to.slice(1);
+              if (p === "home") navigate("/");
+              else if (p === "settings") navigate("/settings");
+              else navigate(`/${p}`);
+            } else {
+              navigate(to);
+            }
+          },
+          healthKey,
+        })
+      : <Health />;
+
+  return <>{wrappedChildren}</>;
 }

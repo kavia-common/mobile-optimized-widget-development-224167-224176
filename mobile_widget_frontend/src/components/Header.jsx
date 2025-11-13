@@ -6,7 +6,11 @@ import React from "react";
  * Fixed header with app title and optional actions (e.g., navigation).
  */
 export function Header({ title, right }) {
-  /** This is a public function. */
+  /** This is a public function.
+   * Props:
+   * - title: string - title text
+   * - right: ReactNode - right-side actions (e.g., NavLinks/buttons)
+   */
   return (
     <header className="header" role="banner">
       <div className="header-inner" aria-label="Application Header">
